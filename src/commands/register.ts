@@ -6,7 +6,7 @@ export default {
   name: 'register',
   description: 'register to the economy system',
   execute: async (message: Message, config: Config) => {
-    const embed = new EmbedBuilder().setColor(config.color).setTitle('success').setDescription(`registered <@${message.author.id}>`).addFields({ name: 'user id', value: message.author.id }).addFields({ name: 'default balance', value: '100 💵' });
+    const embed = new EmbedBuilder().setColor(config.color).setTitle('success').setDescription(`registered <@${message.author.id}>`).addFields({ name: 'user id', value: message.author.id }).addFields({ name: 'default balance', value: '100 💵' }).addFields({ name: 'default experience', value: '0' });
 
     const user = await prisma.user.findUnique({
       where: {

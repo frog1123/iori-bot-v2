@@ -3,6 +3,7 @@ import { Config } from '../types';
 import { prisma } from '../index.js';
 import { randomNumBetween } from '../utils/random.js';
 import { formatTime } from '../utils/formatTime.js';
+import { levelUp } from '../utils/levelUp.js';
 
 export default {
   name: 'search',
@@ -31,11 +32,21 @@ export default {
       },
       data: {
         balance: user.balance + amount,
+        experience: user.experience + 1,
         lastSearchTime: new Date()
       }
     });
 
     const embed = new EmbedBuilder().setColor(config.color).setTitle('success').setDescription(`you searched and found ${amount} 💵`);
     message.channel.send({ embeds: [embed] });
+
+    const afterUser = await prisma.user.findUnique({
+      where: {
+        discordId: message.author.id
+      }
+    });
+
+    if (!afterUser) return;
+    if (afterUser.experience >= afterUser.level * 10) levelUp(message, message.author.id, config);
   }
 };
