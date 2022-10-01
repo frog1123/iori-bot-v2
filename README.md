@@ -1,6 +1,6 @@
 # iori-bot-v2
 
-stable version `78bc89b`
+stable version `27ab126`
 
 ### deploy heroku
 
