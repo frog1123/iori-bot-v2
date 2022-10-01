@@ -1,14 +1,13 @@
 import { Message, EmbedBuilder } from 'discord.js';
 import { Config } from '../types';
 import { prisma } from '../index.js';
-import { randomNumBetween } from '../utils/random.js';
 import { formatTime } from '../utils/formatTime.js';
 
 export default {
-  name: 'search',
-  description: 'search for items',
+  name: 'daily',
+  description: 'claim daily award',
   execute: async (message: Message, config: Config) => {
-    const amount = randomNumBetween(1, 10);
+    const amount = 50;
 
     const user = await prisma.user.findUnique({
       where: {
@@ -20,8 +19,9 @@ export default {
       message.channel.send('user has not registered');
       return;
     }
-    if (new Date().valueOf() - user.lastSearchTime.valueOf() <= 5 * 1000) {
-      message.channel.send(`this command is on cooldown, please wait \`${formatTime(5 * 1000 - (new Date().valueOf() - user.lastSearchTime.valueOf()))}\``);
+
+    if (new Date().valueOf() - user.lastDailyTime.valueOf() <= 24 * 60 * 60 * 1000) {
+      message.channel.send(`this command is on cooldown, please wait \`${formatTime(24 * 60 * 60 * 1000 - (new Date().valueOf() - user.lastDailyTime.valueOf()))}\``);
       return;
     }
 
@@ -31,11 +31,11 @@ export default {
       },
       data: {
         balance: user.balance + amount,
-        lastSearchTime: new Date()
+        lastDailyTime: new Date()
       }
     });
 
-    const embed = new EmbedBuilder().setColor(config.color).setTitle('success').setDescription(`you searched and found ${amount} 💵`);
+    const embed = new EmbedBuilder().setColor(config.color).setTitle('success').setDescription(`claimed ${amount} 💵`);
     message.channel.send({ embeds: [embed] });
   }
 };

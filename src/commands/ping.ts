@@ -1,4 +1,5 @@
 import { Message } from 'discord.js';
+import { formatTime } from '../utils/formatTime.js';
 
 export default {
   name: 'ping',
@@ -6,7 +7,7 @@ export default {
   execute: (message: Message) => {
     message.channel.send('pinging...').then(msg => {
       const ping = msg.createdTimestamp - message.createdTimestamp;
-      msg.edit(`pong! took \`${ping}ms\``);
+      msg.edit(`pong! took \`${formatTime(ping, 'presicion')}\``);
     });
   }
 };

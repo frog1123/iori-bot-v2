@@ -4,8 +4,8 @@ stable version `78bc89b`
 
 deploy heroku
 
-> git push heroku master
+`git push heroku master`
 
 deploy docker
 
-> not implented
+`not implented`
