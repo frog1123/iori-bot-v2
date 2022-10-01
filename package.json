@@ -7,8 +7,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon dist/index.js",
-    "prisma": "prisma generate --schema src/prisma/schema.prisma",
-    "build": "npm run prisma && tsc"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
