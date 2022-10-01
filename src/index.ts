@@ -1,4 +1,5 @@
 import { ActivityType, Client, GatewayIntentBits, Collection } from 'discord.js';
+import { PrismaClient } from '@prisma/client';
 import { readdirSync } from 'fs';
 import { join } from 'path';
 import { Config, Command } from './types';
@@ -13,6 +14,10 @@ export const config: Config = {
 
 const __dirname = process.cwd();
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages] });
+
+// connect to database
+export const prisma = new PrismaClient();
+prisma.$connect().then(() => console.log(chalk.bgBlack('connected to database')));
 
 (async () => {
   const commands = new Collection() as Collection<string, Command>;
@@ -44,4 +49,6 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
   });
 
   client.login(process.env.BOT_TOKEN);
-})();
+})()
+  .catch(err => console.error(err))
+  .finally(async () => await prisma.$disconnect());
