@@ -10,7 +10,7 @@ export const config: Config = {
   presence: 'idle',
   color: '#ffffff'
 };
-
+//
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages] });
 
 (async () => {
