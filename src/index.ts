@@ -10,10 +10,20 @@ export const config: Config = {
   presence: 'idle',
   color: '#ffffff'
 };
-//
+
+const __dirname = process.cwd();
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages] });
 
 (async () => {
+  const commands = new Collection() as Collection<string, Command>;
+  const commandFiles = readdirSync(join(__dirname, 'dist', 'commands')).filter(file => file.endsWith('.js'));
+
+  for (const file of commandFiles) {
+    const command = (await import(`./commands/${file}`)) as unknown as Command;
+    commands.set(command.default.name, command);
+  }
+  console.log(chalk.bgBlack(`loaded commands from ${commandFiles}`));
+
   // start
   client.on('ready', () => {
     console.log(chalk.bgBlack(`logged in as ${client?.user?.tag}`));
@@ -30,9 +40,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
     const command = args!.shift()!.toLowerCase().split(' ')[0];
 
     // execute command if it exists
-    // if (typeof commands.get(command) !== 'undefined') commands?.get(command)?.default.execute(message, config, args);
-
-    if (message.content === '.ping') message.channel.send('pong');
+    if (typeof commands.get(command) !== 'undefined') commands?.get(command)?.default.execute(message, config, args);
   });
 
   client.login(process.env.BOT_TOKEN);
