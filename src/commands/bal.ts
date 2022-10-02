@@ -4,7 +4,7 @@ import { prisma } from '../index.js';
 
 export default {
   name: 'bal',
-  description: 'view a users balance',
+  description: 'view a users balance \n `.bal @user`',
   execute: async (message: Message, config: Config) => {
     const userId = message.mentions.users.first()?.id ?? message.author.id;
 

@@ -5,7 +5,7 @@ import { isNumber } from '../utils/isNumber.js';
 
 export default {
   name: 'transfer',
-  description: 'transfer money to another user',
+  description: 'transfer money to another user\n `.transfer @user <amount>`',
   execute: async (message: Message, config: Config, args: string[]) => {
     const mentionedUser = message.mentions.users.first();
     const userToTransferFrom = await prisma.user.findUnique({

@@ -49,7 +49,6 @@ prisma.$connect().then(() => console.log(chalk.bgBlack('connected to database'))
 
     // execute command if it exists
     if (typeof commands.get(command) !== 'undefined') commands?.get(command)?.default.execute(message, config, args);
-    console.log(args);
   });
 
   client.login(process.env.BOT_TOKEN);
