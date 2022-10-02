@@ -41,11 +41,15 @@ prisma.$connect().then(() => console.log(chalk.bgBlack('connected to database'))
   client.on('messageCreate', message => {
     if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
-    const args = message.content.slice(config.prefix.length).split(/ + /).toString().split(' ');
+    const args = message.content
+      .slice(config.prefix.length)
+      .split(' ')
+      .filter(arg => arg !== '');
     const command = args!.shift()!.toLowerCase().split(' ')[0];
 
     // execute command if it exists
     if (typeof commands.get(command) !== 'undefined') commands?.get(command)?.default.execute(message, config, args);
+    console.log(args);
   });
 
   client.login(process.env.BOT_TOKEN);

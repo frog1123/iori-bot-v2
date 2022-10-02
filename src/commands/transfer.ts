@@ -40,8 +40,18 @@ export default {
       return;
     }
 
+    if (typeof args[1] === 'undefined') {
+      message.channel.send('there was an error');
+      return;
+    }
+
     if (!isNumber(args[1], true)) {
       message.channel.send('incorrect transfer value');
+      return;
+    }
+
+    if (parseInt(args[1]) > userToTransferFrom.balance) {
+      message.channel.send('you cannot transfer this much');
       return;
     }
 
@@ -50,8 +60,6 @@ export default {
       .setTitle('success')
       .setDescription(`transferred ${args[1]} 💵 to <@${mentionedUser.id}>`)
       .addFields({ name: 'transferred from', value: `<@${message.author.id}>` });
-
-    console.log(userToTransferFrom, userToTransferTo);
 
     await prisma.user
       .update({
