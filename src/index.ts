@@ -42,6 +42,12 @@ prisma.$connect().then(() => console.log(chalk.bgBlack('connected to database'))
     console.log(chalk.bgBlack(`logged in as ${client?.user?.tag}`));
     client?.user?.setPresence({ status: 'idle' });
     client?.user?.setActivity(`${client.guilds.cache.size} server${client.guilds.cache.size > 1 ? 's' : ''}`, { type: ActivityType.Watching });
+
+    let commands = client.application?.commands;
+
+    slashCommands.forEach(sc => {
+      commands?.create({ name: sc.default.data.name, description: sc.default.data.description });
+    });
   });
 
   // refresh server watch count
