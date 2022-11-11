@@ -8,6 +8,7 @@ export interface Config {
 
 export interface Command {
   default: {
+    data?: any;
     name: string;
     description: string;
     execute: (message: Message, config: Config, args: string[]) => void | Promise<void>;
